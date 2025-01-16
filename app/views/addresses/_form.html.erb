@@ -1,0 +1,81 @@
+<%= form_with(model: address, class: "max-w-xl mx-auto p-6", data: { turbo: false }) do |form| %>
+  <div data-controller="zipcode">
+    <div class="form-control w-full">
+      <label class="label">
+        <span class="label-text">郵便番号</span>
+        <span class="label-text-alt text-error">※ハイフンなしで入力</span>
+      </label>
+      <div class="flex gap-2">
+        <%= form.text_field :zipcode,
+          data: {
+            zipcode_target: "zipcode",
+            action: "input->zipcode#cleanupZipcode"
+          },
+          class: "input input-bordered w-full #{address.errors[:zipcode].present? ? 'input-error' : ''}",
+          placeholder: "例: 1234567",
+          maxlength: 8,
+          required: true,
+          pattern: "\\d{7}"
+        %>
+        <button type="button"
+          class="btn btn-primary"
+          data-action="click->zipcode#fetchAddress">
+          住所検索
+        </button>
+      </div>
+      <div data-zipcode-target="errorMessage" class="text-error mt-2 hidden"></div>
+    </div>
+
+    <%= form.fields_for :address_attributes do |address_form| %>
+      <div class="form-control w-full mt-4">
+        <label class="label">
+          <span class="label-text">都道府県</span>
+        </label>
+        <%= address_form.text_field :prefecture,
+          data: { zipcode_target: "prefecture" },
+          class: "input input-bordered w-full",
+          readonly: true,
+          required: true
+        %>
+      </div>
+
+      <div class="form-control w-full mt-4">
+        <label class="label">
+          <span class="label-text">市区町村</span>
+        </label>
+        <%= address_form.text_field :city,
+          data: { zipcode_target: "city" },
+          class: "input input-bordered w-full",
+          readonly: true,
+          required: true
+        %>
+      </div>
+
+      <div class="form-control w-full mt-4">
+        <label class="label">
+          <span class="label-text">町域・番地</span>
+        </label>
+        <%= address_form.text_field :street,
+          data: { zipcode_target: "street" },
+          class: "input input-bordered w-full",
+          required: true
+        %>
+      </div>
+
+      <div class="form-control w-full mt-4">
+        <label class="label">
+          <span class="label-text">建物名・部屋番号</span>
+          <span class="label-text-alt">任意</span>
+        </label>
+        <%= address_form.text_field :building,
+          class: "input input-bordered w-full"
+        %>
+      </div>
+    <% end %>
+
+    <div class="mt-6 flex justify-end gap-2">
+      <%= link_to "キャンセル", addresses_path, class: "btn" %>
+      <%= form.submit "保存", class: "btn btn-primary", data: { disable_with: "保存中..." } %>
+    </div>
+  </div>
+<% end %>

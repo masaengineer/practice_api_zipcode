@@ -47,3 +47,5 @@ group :development do
   # Live reload for development
   gem "hotwire-livereload"
 end
+
+gem 'faraday'  # HTTP通信用

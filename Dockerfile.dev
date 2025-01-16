@@ -19,3 +19,7 @@ RUN bundle install
 COPY package.json ./
 RUN npm install
 RUN npm install -g esbuild tailwindcss
+
+# 環境変数の設定
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY

@@ -1,0 +1,42 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">住所一覧</h1>
+    <%= link_to "新規登録", new_address_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if notice %>
+    <div class="alert alert-success mb-4">
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>郵便番号</th>
+          <th>都道府県</th>
+          <th>市区町村</th>
+          <th>町域・番地</th>
+          <th>建物名</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @addresses.each do |address| %>
+          <tr>
+            <td><%= address.zipcode %></td>
+            <td><%= address.prefecture %></td>
+            <td><%= address.city %></td>
+            <td><%= address.street %></td>
+            <td><%= address.building %></td>
+            <td class="flex gap-2">
+              <%= link_to "編集", edit_address_path(address), class: "btn btn-sm" %>
+              <%= button_to "削除", address_path(address), method: :delete, class: "btn btn-sm btn-error", form: { data: { turbo_confirm: "本当に削除しますか？" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

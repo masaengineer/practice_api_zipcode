@@ -3,10 +3,12 @@ import { Turbo } from '@hotwired/turbo-rails';
 window.Turbo = Turbo;
 
 import { Application } from '@hotwired/stimulus';
-import { registerControllers } from './controllers';
+import ThemeController from './controllers/theme_controller';
+import ZipcodeController from './controllers/zipcode_controller';
 
 const application = Application.start();
-registerControllers(application);
+application.register('theme', ThemeController);
+application.register('zipcode', ZipcodeController);
 
 // DaisyUI theme controller
 document.addEventListener('turbo:load', () => {
